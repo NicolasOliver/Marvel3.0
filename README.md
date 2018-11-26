@@ -8,7 +8,7 @@ Composition de l'équipe :
 
 Préparatifs :
 
-- Une réunion environ toutes les deux semaines, pour s'organiser et voir notre avancée
+- Une réunion toutes les semaines, pour s'organiser et voir notre avancée
 - Nous avons réparti nos tâches sur un Google Doc, mais nous aurions pu utiliser Trello
 
 Procédure :
