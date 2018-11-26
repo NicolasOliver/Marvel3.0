@@ -1,0 +1,22 @@
+Fonctionnalités détaillées
+
+Pour notre application dédiée à la création d’une bibliothèque Marvel, nous allons utiliser l’API Marvel, disponible à ce lien :  https://developer.marvel.com/docs#!/public/getComicsCharacterCollection_get_2
+C’est une API pour développeur désirant utiliser des informations provenant de l’univers Marvel.
+ 
+
+Pour rappel, le but principal de l’application est de pouvoir gérer sa bibliothèque de Comics Marvel.
+L’application, développée en Java / JavaFX, sous Éclipse, pourra :
+1)	Donner des informations sur un personnage de l’univers Marvel
+2)	Donner des informations sur un comics de l’univers Marvel
+3)	Pouvoir se connecter à une base de données embarquée
+4)	Pouvoir gérer sa bibliothèque de comics 
+Détails :
+1)	Il y aura un bouton « Rechercher personnage » permettant de rentrer un nom de héros et d’afficher des informations sur le personnage provenant directement de l’API Marvel
+2)	Il y aura un bouton « Rechercher comics » permettant de rentrer un bout de titre de comics et affichant les informations de ce comics provenant de l’API Marvel
+1 & 2) Il faudra pour cela faire une requête http au serveur et parser les informations en JSON provenant de l’API
+3)	L’application disposera d’une base de données embarquée Derby, afin de pouvoir gérer sa propre bibliothèque
+4)	Pouvoir rajouter ou supprimer des comics, et si le temps le permet, pouvoir les noter, ajouter des commentaires et un marque-page. 
+Nous allons respecter le Design Pattern MVC (Model View Controler)
+
+(Le diagramme de classe est fait avec StarUML)
+
