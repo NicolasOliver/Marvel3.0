@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.ArrayList;
-
 /**
  * Classe qui représente un personnage Marvel de l'API
  * @author Nico
@@ -13,7 +11,6 @@ public class Personnage {
 	private String name;
 	private String description;
 	private String lien_image;
-	private ArrayList<String> comics= new ArrayList<String>() ;
 	public Personnage(int id, String name, String description, String lien_image) {
 		super();
 		this.id = id;
@@ -48,21 +45,6 @@ public class Personnage {
 	public void setLien_image(String lien_image) {
 		this.lien_image = lien_image;
 	}
-	public void setComics(String comics) {
-		this.comics.add(comics);
-	}
-	public void getComics() {
-		System.out.println(" Voici les titres des comics ou le personnage apparait: ");
-		for(int i=0; i<comics.size(); i++)
-		{
-			String title = (String)comics.get(i);
-			System.out.println(title);
-		}
-	}
-	
-	public ArrayList<String> getComics2() {
-		return comics;
-	}
 	
 	public void afficher() {
 		System.out.println("Nom du personnage : " + this.getName());
@@ -70,8 +52,5 @@ public class Personnage {
 		System.out.println(" Description: " + this.getDescription());
 		System.out.println(" Lien de l'image de profil: " + this.getLien_image());
 	} 
-	public void afficheComics() {
-		this.getComics();
-	}
 
 }

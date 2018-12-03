@@ -71,6 +71,9 @@ public class Comics {
 		this.comics.add(comics);
 	}
 	
+	public String getComicsId(int i) {
+		return comics.get(i);
+	}
 	public void getComics() {
 		System.out.println("Pour cette recherche il y a "+total+" comics disponibles.");
 		System.out.println("Sur quel comics voulez-vous des informations : ");
