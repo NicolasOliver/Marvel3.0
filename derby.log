@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Dec 04 20:36:31 EST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-0167-7c02-6789-000025acb1e8 
+on database directory C:\Users\BIENVENUE\git\Marvel3.0\bdd with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/C:/Users/BIENVENUE/git/Marvel3.0/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_191-b12
+user.dir=C:\Users\BIENVENUE\git\Marvel3.0
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

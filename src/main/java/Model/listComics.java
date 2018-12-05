@@ -7,6 +7,7 @@ public class listComics {
 	private int total;
 	private ArrayList<Integer> comicsID = new ArrayList<Integer>();
 	private ArrayList<String> comicsName = new ArrayList<String>();
+	private String lien_image;
 
 	public void setTotal(int int1) {
 		this.total = int1;
@@ -32,4 +33,34 @@ public class listComics {
 	public void setComicsName(String setComics) {
 		this.comicsName.add(setComics);
 	}
+
+	public ArrayList<Integer> getComicsID() {
+		return comicsID;
+	}
+
+	public void setComicsID(ArrayList<Integer> comicsID) {
+		this.comicsID = comicsID;
+	}
+
+	public ArrayList<String> getComicsName() {
+		return comicsName;
+	}
+
+	public void setComicsName(ArrayList<String> comicsName) {
+		this.comicsName = comicsName;
+	}
+
+	public String getLien_image() {
+		return lien_image;
+	}
+
+	public void setLien_image(String lien_image) {
+		this.lien_image = lien_image;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+	
+	
 }

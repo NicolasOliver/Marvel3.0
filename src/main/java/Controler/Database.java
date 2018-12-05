@@ -87,7 +87,7 @@ public class Database {
 
 			// We want to control transactions manually. Autocommit is on by
 			// default in JDBC.
-			conn.setAutoCommit(false);
+			conn.setAutoCommit(true);
 			/*
 			 * Creating a statement object that we can use for running various SQL
 			 * statements commands against the database.

@@ -7,18 +7,26 @@ import java.security.NoSuchAlgorithmException;
 import org.json.JSONException;
 
 import Controler.Database;
+import Model.Comics;
 import Model.Parse;
 import Model.Personnage;
+import Model.listComics;
 import javafx.application.Application;
-
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
-
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -33,6 +41,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -55,11 +64,15 @@ public class Fenetre extends Application {
 	Button backBtn = new Button("Retour");
 	Button validateBtn = new Button("Valider");
 	Button decoBtn = new Button("Se déconnecter");
+	Button detail = new Button("Détail");
 	Button biblioBtn = new Button("Bibliothèque");
+	Button ajoutBibli = new Button("ajouter biblihotèque");
 	Alert alert = new Alert(AlertType.INFORMATION);
 	Boolean isConnected = false;
 	Personnage perso = null;
+	listComics comics = null;
 	HBox hbHeros;
+	Comics comic = null;
 	
 	public void start() {
 		
@@ -91,9 +104,10 @@ public class Fenetre extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
+
 				searchHeros();
-				
 			}
+			
 			
 		});
 		
@@ -141,7 +155,35 @@ public class Fenetre extends Application {
 	}
 	
 	public void displayBiblio() {
+		
 		root.getChildren().clear();
+		Label label = new Label("Votre biblihotèque :");
+		label.setStyle("-fx-font-weight: bold");
+		label.setFont(new Font("Arial", 20));
+		TableView table = new TableView();
+		TableColumn NameCol = new TableColumn("Name");
+	    TableColumn descriptionCol = new TableColumn("Description");
+	    TableColumn AutorCol = new TableColumn("Auteur");
+	    TableColumn imgCol = new TableColumn("Image");
+	    table.getColumns().addAll(NameCol, descriptionCol,AutorCol, imgCol);
+
+	    final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(300, 0, 0, 0));
+        vbox.getChildren().addAll(label, table);
+	    
+	    root.getChildren().addAll(vbox, backBtn);
+	}
+	
+	public HBox newHb() {
+		Label label = new Label("Entrer le nom d'un héros : ");
+		TextField textField = new TextField();
+		textField.setPromptText("Héros...");
+		HBox hb = new HBox();
+		hb.getChildren().addAll(label,textField,validateBtn,backBtn);
+		hb.setSpacing(10);
+		hb.setPadding(new Insets(300, 20, 10, 222));
+		return hb;
 	}
 	
 	public void searchHeros() {
@@ -150,7 +192,13 @@ public class Fenetre extends Application {
 		TextField textField = new TextField();
 		textField.setPromptText("Héros...");
 		// A modifier pour un comics mais même principe que perso
-		/*
+		
+		HBox hb = new HBox();
+		hb.getChildren().addAll(label,textField,validateBtn,backBtn);
+		hb.setSpacing(10);
+		hb.setPadding(new Insets(300, 20, 10, 222));
+		root.getChildren().add(hb);
+		
 		validateBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -162,6 +210,7 @@ public class Fenetre extends Application {
 					alert.showAndWait();
 				}else{
 					try {
+						root.getChildren().clear();
 						perso = Parse.infoPersonnage(textField.getText());
 						System.out.println(perso.getName());
 						String url = perso.getLien_image();
@@ -196,7 +245,8 @@ public class Fenetre extends Application {
 						hbHeros.getChildren().addAll(imgPerso,vb);
 						hbHeros.setSpacing(10);
 						hbHeros.setPadding(new Insets(350, 20, 10, 20));
-						//root.getChildren().add(hbHeros);
+						getRoot().getChildren().add(hbHeros);
+						root.getChildren().add(newHb());
 						
 					} catch (NoSuchAlgorithmException | IOException | JSONException e) {
 						// TODO Auto-generated catch block
@@ -208,17 +258,18 @@ public class Fenetre extends Application {
 					}	
 				}
 			}
-		}); */
-		
-		
+		}); 
+	}
+	
+	public HBox newHbCo() {
+		Label label = new Label("Rechercher un comics : ");
+		TextField textField = new TextField();
+		textField.setPromptText("Comics...");
 		HBox hb = new HBox();
 		hb.getChildren().addAll(label,textField,validateBtn,backBtn);
 		hb.setSpacing(10);
-		hb.setPadding(new Insets(300, 20, 10, 222));
-		
-		root.getChildren().add(hb);
-		
-		
+		hb.setPadding(new Insets(300, 20, 10, 240));
+		return hb;
 	}
 	
 	public void searchComics() {
@@ -226,9 +277,15 @@ public class Fenetre extends Application {
 		Label label = new Label("Rechercher un comics : ");
 		TextField textField = new TextField();
 		textField.setPromptText("Comics...");
+		ListView<String> listView = new ListView<String>();
+		
+		HBox hb = new HBox();
+		hb.getChildren().addAll(label,textField,validateBtn,backBtn);
+		hb.setSpacing(10);
+		hb.setPadding(new Insets(300, 20, 10, 240));
+		root.getChildren().addAll(hb);
 
 		validateBtn.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				if(textField.getText().isEmpty()) {
@@ -238,41 +295,40 @@ public class Fenetre extends Application {
 					alert.showAndWait();
 				}else{
 					try {
-						perso = Parse.infoPersonnage(textField.getText());
-						System.out.println(perso.getName());
-						String url = perso.getLien_image();
-						Image img = new Image(url,250,250,false,true);
-						ImageView imgPerso = new ImageView(img);
-						Label labelName = new Label("Nom : ");
-						Text infoName = new Text();
-						infoName.setText(perso.getName());
+						comics = Parse.listeComics(textField.getText(), 0);
+						if(comics.getComicsID().isEmpty()) {
+							alert.setTitle("Information");
+							alert.setHeaderText(null);
+							alert.setContentText("Aucun comics trouvé !");
+							alert.showAndWait();
+						} else {
+							listView.getItems().clear();
+						 for(int i = 0;i<comics.getComicsName().size();i++) {
+							 listView.getItems().add(comics.getComicsID().get(i)+" - "+comics.getComicsName().get(i));
+						 }
+						 	root.getChildren().clear();
+						 	root.setBackground(new Background(back));
+						 
+					        VBox hb1 = new VBox(listView);
+					        hb1.setSpacing(10);
+					        hb1.setPadding(new Insets(0, 20, 10, 20));
+					        
+					        HBox hb = new HBox();
+							hb.getChildren().addAll(label,textField,validateBtn,backBtn , detail);
+							hb.setSpacing(10);
+							hb.setPadding(new Insets(0, 20, 10, 240));
 						
-						Label labelDescription = new Label("Description : ");
-						Label infoDescription = new Label(perso.getDescription());
-						infoDescription.setMaxWidth(350);
-						infoDescription.setWrapText(true);
+							VBox vbox = new VBox();
+							vbox.getChildren().addAll(hb, hb1);
+							vbox.setSpacing(10);
+							vbox.setPadding(new Insets(300, 20, 10, 20));
+							
+							
+							
+					        
+					        root.getChildren().addAll(vbox);
+						}
 						
-						
-						HBox hb1 = new HBox();
-						hb1.getChildren().addAll(labelName,infoName);
-						hb1.setSpacing(10);
-						hb1.setPadding(new Insets(0, 20, 10, 20));
-						
-						HBox hb2 = new HBox();
-						hb2.getChildren().addAll(labelDescription,infoDescription);
-						hb2.setSpacing(10);
-						hb2.setPadding(new Insets(0, 20, 10, 20));
-						
-						VBox vb = new VBox();
-						vb.setSpacing(10);
-						vb.setPadding(new Insets(0, 20, 10, 20)); 
-						vb.getChildren().addAll(hb1,hb2);
-						
-						hbHeros = new HBox();
-						hbHeros.getChildren().addAll(imgPerso,vb);
-						hbHeros.setSpacing(10);
-						hbHeros.setPadding(new Insets(350, 20, 10, 20));
-						//root.getChildren().add(hbHeros);
 						
 					} catch (NoSuchAlgorithmException | IOException | JSONException e) {
 						// TODO Auto-generated catch block
@@ -286,13 +342,108 @@ public class Fenetre extends Application {
 			}
 		});
 		
+		detail.setOnAction(event -> {
+            ObservableList<String> selectedIndices = listView.getSelectionModel().getSelectedItems();
+            root.getChildren().clear();
+		 	root.setBackground(new Background(back));
+		 	if(selectedIndices.isEmpty()) {
+		 		alert.setTitle("Information");
+				alert.setHeaderText(null);
+				alert.setContentText("Sélectionner un item !");
+				alert.showAndWait();
+		 	} else {
+		 		try {
+			 		
+			 		comic = Parse.infoComicsId(selectedIndices.get(0).substring(0, 5));
+			 		comic.afficher();
+			 		
+			 		String url = comic.getLien_image();
+					Image img = new Image(url,250,250,false,true);
+					ImageView imgPerso = new ImageView(img);
+			 		
+			 		Label labelTitre = new Label("Titre : ");
+					Label titre = new Label(comic.getTitle());
+					titre.setMaxWidth(350);
+					titre.setWrapText(true);
+					
+					Label labelAuteur = new Label("Auteur : ");
+					Label Auteur = new Label(comic.getPremierCreateur());
+					Auteur.setMaxWidth(350);
+					Auteur.setWrapText(true);
+					
+					Label labelDesc = new Label("Description : ");
+					Label Desc = new Label(comic.getDescription());
+					Desc.setMaxWidth(350);
+					Desc.setWrapText(true);
+					
+					HBox hb0 = new HBox();
+					hb0.getChildren().addAll(label,textField,validateBtn,backBtn , ajoutBibli);
+					hb0.setSpacing(10);
+					hb0.setPadding(new Insets(0, 0, 10, 20));
+					
+					HBox hbBt = new HBox();
+					hbBt.getChildren().add(ajoutBibli);
+					hbBt.setSpacing(10);
+					hbBt.setPadding(new Insets(0, 20, 10, 20));
+					
+					HBox hb1 = new HBox();
+					hb1.getChildren().addAll(labelTitre,titre);
+					hb1.setSpacing(10);
+					hb1.setPadding(new Insets(0, 20, 10, 20));
+					
+					HBox hb2 = new HBox();
+					hb2.getChildren().addAll(labelAuteur,Auteur);
+					hb2.setSpacing(10);
+					hb2.setPadding(new Insets(0, 20, 10, 20));
+					
+					HBox hb3 = new HBox();
+					hb3.getChildren().addAll(labelDesc,Desc);
+					hb3.setSpacing(10);
+					hb3.setPadding(new Insets(0, 20, 10, 20));
+					
+					VBox vb = new VBox();
+						vb.setSpacing(10);
+						vb.setPadding(new Insets(0, 20, 10, 20)); 
+						vb.getChildren().addAll(hb0, hb1,hb2, hb3, hbBt);
+					
+					
+					
+					
+					hbHeros = new HBox();
+					hbHeros.getChildren().addAll(imgPerso,vb);
+					hbHeros.setSpacing(10);
+					hbHeros.setPadding(new Insets(300, 20, 10, 20));
+					getRoot().getChildren().add(hbHeros);
+					
+					
+					
+				} catch (NoSuchAlgorithmException | IOException | JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					alert.setTitle("Information");
+					alert.setHeaderText(null);
+					alert.setContentText("Un problème est survenu.");
+					alert.showAndWait();
+				}	
+			 	
+			 	
+	                System.out.println(selectedIndices);
+		 	}
+		 	
+		 	
+            
+        });
 		
-		HBox hb = new HBox();
-		hb.getChildren().addAll(label,textField,validateBtn,backBtn);
-		hb.setSpacing(10);
-		hb.setPadding(new Insets(300, 20, 10, 240));
+		this.ajoutBibli.setOnAction(event -> {
+			
+			
+	 		 Database.createDatabase("bdd", "bdd");
+	 		 Database.connectDatabase("bdd", "bdd");
+	 		 Database.insert("bdd", "bdd", "bdd", comic.getId(), comic.getTitle(), comic.getPremierCreateur(), "", 0, 0, comic.getDescription().substring(0, 500));
+	 		 Database.selectByTitle(comic.getTitle());
+	 		 Database.deconnection();
+	 	});
 		
-		root.getChildren().addAll(hb);
 	}
 	
 	public void connect() {
@@ -456,6 +607,14 @@ public class Fenetre extends Application {
 			}
 		});
 		start();
+	}
+
+	public static StackPane getRoot() {
+		return root;
+	}
+
+	public static void setRoot(StackPane root) {
+		Fenetre.root = root;
 	}
 	
 }
