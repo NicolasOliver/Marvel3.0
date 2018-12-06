@@ -64,7 +64,7 @@ public class Fenetre extends Application {
 	Button backBtn = new Button("Retour");
 	Button validateBtn = new Button("Valider");
 	Button decoBtn = new Button("Se déconnecter");
-	Button detail = new Button("Détail");
+	Button detail = new Button("Détails");
 	Button biblioBtn = new Button("Bibliothèque");
 	Button ajoutBibli = new Button("Ajouter");
 	Alert alert = new Alert(AlertType.INFORMATION);
@@ -73,6 +73,7 @@ public class Fenetre extends Application {
 	listComics comics = null;
 	HBox hbHeros;
 	Comics comic = null;
+	TextField textFieldHeros = new TextField();
 	
 	public void start() {
 		
@@ -189,12 +190,11 @@ public class Fenetre extends Application {
 	public void searchHeros() {
 		root.getChildren().clear();
 		Label label = new Label("Entrer le nom d'un héros : ");
-		TextField textField = new TextField();
-		textField.setPromptText("Héros...");
+		textFieldHeros.setPromptText("Héros...");
 		// A modifier pour un comics mais même principe que perso
 		
 		HBox hb = new HBox();
-		hb.getChildren().addAll(label,textField,validateBtn,backBtn);
+		hb.getChildren().addAll(label,textFieldHeros,validateBtn,backBtn);
 		hb.setSpacing(10);
 		hb.setPadding(new Insets(300, 20, 10, 222));
 		root.getChildren().add(hb);
@@ -203,7 +203,7 @@ public class Fenetre extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				if(textField.getText().isEmpty()) {
+				if(textFieldHeros.getText().isEmpty()) {
 					alert.setTitle("Information");
 					alert.setHeaderText(null);
 					alert.setContentText("Le champ est vide !");
@@ -212,9 +212,9 @@ public class Fenetre extends Application {
 					try {
 						perso = new Personnage();
 						root.getChildren().clear();
-						perso = Parse.infoPersonnage(textField.getText());
-						System.out.println(textField.getText());
-						System.out.println(perso.getName());
+						perso = Parse.infoPersonnage(textFieldHeros.getText());
+						System.out.println(textFieldHeros.getText());
+						textFieldHeros.clear();
 						String url = perso.getLien_image();
 						Image img = new Image(url,250,250,false,true);
 						ImageView imgPerso = new ImageView(img);
@@ -350,8 +350,9 @@ public class Fenetre extends Application {
 		 	if(selectedIndices.isEmpty()) {
 		 		alert.setTitle("Information");
 				alert.setHeaderText(null);
-				alert.setContentText("Sélectionner un item !");
+				alert.setContentText("Il faut sélectionner un item !");
 				alert.showAndWait();
+				searchComics();
 		 	} else {
 		 		try {
 			 		
@@ -444,7 +445,12 @@ public class Fenetre extends Application {
         });
 		
 		this.ajoutBibli.setOnAction(event -> {
-	 		 //Database.insert("bdd", "bdd", "bdd", comic.getId(), comic.getTitle(), comic.getPremierCreateur(), "", 0, 0, comic.getDescription().substring(0, 500));
+	 		 if(Database.insert(comic.getId(), comic.getTitle(), comic.getDescription().substring(0,500), comic.getPremierCreateur())) {
+	 			alert.setTitle("Information");
+				alert.setHeaderText(null);
+				alert.setContentText("Comics correctement ajouté à la bibliothèque !");
+				alert.showAndWait();
+	 		 }
 	 		 //Database.selectByTitle(comic.getTitle());
 	 		 //Database.deconnection();
 	 	});

@@ -96,9 +96,8 @@ public class Database {
 			statements.add(s);
 
 			// We create a table...
-			s.execute("create table library(id int primary key not null," + " titre varchar(100),"
-					+ " auteur varchar(100)," + "etat varchar(100)," + " bookmark int," + " note int,"
-					+ " commentaire varchar(500))");
+			s.execute("create table library(id int primary key not null," + " titre varchar(1000),"
+					+ " description varchar(1000)," + "auteur varchar(1000))");
 
 			/*
 			 * We commit the transaction. Any changes will be persisted to the database now.
@@ -192,8 +191,7 @@ public class Database {
 			statements.add(s);
 			rs = s.executeQuery("SELECT COUNT(*) FROM library where title = ?");
 			while (rs.next()) {
-				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4)
-						+ " " + rs.getString(5) + " " + rs.getInt(6) + " " + rs.getInt(7) + " " + rs.getString(8));
+				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
 			}
 			conn.commit();
 			return true;
@@ -226,8 +224,7 @@ public class Database {
 			statements.add(s);
 			rs = s.executeQuery("SELECT * FROM library where id = ?");
 			while (rs.next()) {
-				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4)
-						+ " " + rs.getString(5) + " " + rs.getInt(6) + " " + rs.getInt(7) + " " + rs.getString(8));
+				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
 			}
 			conn.commit();
 			return true;
@@ -256,8 +253,7 @@ public class Database {
 			statements.add(s);
 			rs = s.executeQuery("SELECT * FROM library where author = ?");
 			while (rs.next()) {
-				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4)
-						+ " " + rs.getString(5) + " " + rs.getInt(6) + " " + rs.getInt(7) + " " + rs.getString(8));
+				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
 			}
 			conn.commit();
 			return true;
@@ -305,20 +301,16 @@ public class Database {
 	 * @param com
 	 * @return
 	 */
-	public static Boolean insert(String dbName, String userName, String pass, int id, String title, String author,
-			String etat, int bookmark, int note, String com) {
+	public static Boolean insert(int id, String name, String author, String description) {
 		try {
 			// Commande pour insérer des valeurs
-			psInsert = conn.prepareStatement("insert into library values (?, ?, ?, ?, ?, ?, ?)");
+			psInsert = conn.prepareStatement("insert into library values (?, ?, ?, ?)");
 			statements.add(psInsert);
 
 			psInsert.setInt(1, id);
-			psInsert.setString(2, title);
-			psInsert.setString(3, author);
-			psInsert.setString(4, etat);
-			psInsert.setInt(5, bookmark);
-			psInsert.setInt(6, note);
-			psInsert.setString(7, com);
+			psInsert.setString(2, name);
+			psInsert.setString(3, description);
+			psInsert.setString(4, author);	
 
 			psInsert.executeUpdate();
 			conn.commit();
@@ -337,8 +329,7 @@ public class Database {
 
 		rs = s.executeQuery("SELECT * FROM library");
 		while (rs.next()) {
-			String[] info = { Integer.toString(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4),
-					Integer.toString(rs.getInt(5)), Integer.toString(rs.getInt(6)), rs.getString(7) };
+			String[] info = { Integer.toString(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4) };
 			data.add(info);
 
 		}
