@@ -66,7 +66,7 @@ public class Fenetre extends Application {
 	Button decoBtn = new Button("Se déconnecter");
 	Button detail = new Button("Détail");
 	Button biblioBtn = new Button("Bibliothèque");
-	Button ajoutBibli = new Button("ajouter biblihotèque");
+	Button ajoutBibli = new Button("Ajouter");
 	Alert alert = new Alert(AlertType.INFORMATION);
 	Boolean isConnected = false;
 	Personnage perso = null;
@@ -210,8 +210,10 @@ public class Fenetre extends Application {
 					alert.showAndWait();
 				}else{
 					try {
+						perso = new Personnage();
 						root.getChildren().clear();
 						perso = Parse.infoPersonnage(textField.getText());
+						System.out.println(textField.getText());
 						System.out.println(perso.getName());
 						String url = perso.getLien_image();
 						Image img = new Image(url,250,250,false,true);
@@ -255,6 +257,8 @@ public class Fenetre extends Application {
 						alert.setHeaderText(null);
 						alert.setContentText("Un problème est survenu.");
 						alert.showAndWait();
+						root.getChildren().clear();
+						searchHeros();
 					}	
 				}
 			}
@@ -322,10 +326,7 @@ public class Fenetre extends Application {
 							vbox.getChildren().addAll(hb, hb1);
 							vbox.setSpacing(10);
 							vbox.setPadding(new Insets(300, 20, 10, 20));
-							
-							
-							
-					        
+
 					        root.getChildren().addAll(vbox);
 						}
 						
@@ -377,10 +378,15 @@ public class Fenetre extends Application {
 					Desc.setWrapText(true);
 					
 					HBox hb0 = new HBox();
-					hb0.getChildren().addAll(label,textField,validateBtn,backBtn , ajoutBibli);
+					if(isConnected) { 
+						hb0.getChildren().addAll(label,textField,validateBtn,backBtn , ajoutBibli);
+					} else {
+						hb0.getChildren().addAll(label,textField,validateBtn,backBtn);
+					}
+					
 					hb0.setSpacing(10);
 					hb0.setPadding(new Insets(0, 0, 10, 20));
-					
+									
 					HBox hbBt = new HBox();
 					hbBt.getChildren().add(ajoutBibli);
 					hbBt.setSpacing(10);
@@ -402,12 +408,13 @@ public class Fenetre extends Application {
 					hb3.setPadding(new Insets(0, 20, 10, 20));
 					
 					VBox vb = new VBox();
-						vb.setSpacing(10);
-						vb.setPadding(new Insets(0, 20, 10, 20)); 
+					vb.setSpacing(10);
+					vb.setPadding(new Insets(0, 20, 10, 20)); 
+					if(isConnected) {
 						vb.getChildren().addAll(hb0, hb1,hb2, hb3, hbBt);
-					
-					
-					
+					} else {
+						vb.getChildren().addAll(hb0, hb1,hb2, hb3);
+					}
 					
 					hbHeros = new HBox();
 					hbHeros.getChildren().addAll(imgPerso,vb);
@@ -424,6 +431,8 @@ public class Fenetre extends Application {
 					alert.setHeaderText(null);
 					alert.setContentText("Un problème est survenu.");
 					alert.showAndWait();
+					root.getChildren().clear();
+					searchComics();
 				}	
 			 	
 			 	
@@ -435,13 +444,9 @@ public class Fenetre extends Application {
         });
 		
 		this.ajoutBibli.setOnAction(event -> {
-			
-			
-	 		 Database.createDatabase("bdd", "bdd");
-	 		 Database.connectDatabase("bdd", "bdd");
-	 		 Database.insert("bdd", "bdd", "bdd", comic.getId(), comic.getTitle(), comic.getPremierCreateur(), "", 0, 0, comic.getDescription().substring(0, 500));
-	 		 Database.selectByTitle(comic.getTitle());
-	 		 Database.deconnection();
+	 		 //Database.insert("bdd", "bdd", "bdd", comic.getId(), comic.getTitle(), comic.getPremierCreateur(), "", 0, 0, comic.getDescription().substring(0, 500));
+	 		 //Database.selectByTitle(comic.getTitle());
+	 		 //Database.deconnection();
 	 	});
 		
 	}
