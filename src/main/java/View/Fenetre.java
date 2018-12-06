@@ -450,7 +450,11 @@ public class Fenetre extends Application {
 				alert.setHeaderText(null);
 				alert.setContentText("Comics correctement ajouté à la bibliothèque !");
 				alert.showAndWait();
-	);
+	 		 } else {
+	 			alert.setTitle("Information");
+				alert.setHeaderText(null);
+				alert.setContentText("Un problème est survenu !");
+				alert.showAndWait();
 	 		 }
 	 		comic = new Comics();
 	 	});
