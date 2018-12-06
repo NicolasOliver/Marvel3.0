@@ -96,8 +96,8 @@ public class Database {
 			statements.add(s);
 
 			// We create a table...
-			s.execute("create table library(id int primary key not null," + " titre varchar(1000),"
-					+ " description varchar(1000)," + "auteur varchar(1000))");
+			s.execute("create table library(id int," + " titre varchar(1000),"
+					+ " description varchar(10000)," + "auteur varchar(1000))");
 
 			/*
 			 * We commit the transaction. Any changes will be persisted to the database now.
@@ -189,7 +189,7 @@ public class Database {
 			// Commande de SELECT qui affiche une ligne
 			s = conn.createStatement();
 			statements.add(s);
-			rs = s.executeQuery("SELECT COUNT(*) FROM library where title = ?");
+			rs = s.executeQuery("SELECT COUNT(*) FROM library where title = "+title);
 			while (rs.next()) {
 				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
 			}
@@ -212,7 +212,7 @@ public class Database {
 	 * @param pass
 	 * @return
 	 */
-	public static Boolean selectLigne(int id, String dbName, String userName, String pass) {
+	public static Boolean selectLigne(int id) {
 		try {
 
 			/*
@@ -222,7 +222,7 @@ public class Database {
 			// Commande de SELECT qui affiche une ligne
 			s = conn.createStatement();
 			statements.add(s);
-			rs = s.executeQuery("SELECT * FROM library where id = ?");
+			rs = s.executeQuery("SELECT * FROM library where id ="+id);
 			while (rs.next()) {
 				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
 			}
@@ -242,7 +242,7 @@ public class Database {
 	 * @param pass
 	 * @return
 	 */
-	public static Boolean selectByAuthor(String author, String userNames, String pass) {
+	public static Boolean selectByAuthor(String author) {
 		try {
 			/*
 			 * Creating a statement object that we can use for running various SQL
@@ -251,7 +251,7 @@ public class Database {
 			// Commande de SELECT qui affiche une ligne
 			s = conn.createStatement();
 			statements.add(s);
-			rs = s.executeQuery("SELECT * FROM library where author = ?");
+			rs = s.executeQuery("SELECT * FROM library where auteur = "+author);
 			while (rs.next()) {
 				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
 			}

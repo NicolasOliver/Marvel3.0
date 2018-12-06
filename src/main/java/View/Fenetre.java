@@ -248,7 +248,7 @@ public class Fenetre extends Application {
 						hbHeros.setSpacing(10);
 						hbHeros.setPadding(new Insets(350, 20, 10, 20));
 						getRoot().getChildren().add(hbHeros);
-						root.getChildren().add(newHb());
+						root.getChildren().add(hb);
 						
 					} catch (NoSuchAlgorithmException | IOException | JSONException e) {
 						// TODO Auto-generated catch block
@@ -445,14 +445,14 @@ public class Fenetre extends Application {
         });
 		
 		this.ajoutBibli.setOnAction(event -> {
-	 		 if(Database.insert(comic.getId(), comic.getTitle(), comic.getDescription().substring(0,500), comic.getPremierCreateur())) {
+	 		 if(Database.insert(comic.getId(), comic.getTitle(), comic.getDescription(), comic.getPremierCreateur())) {
 	 			alert.setTitle("Information");
 				alert.setHeaderText(null);
 				alert.setContentText("Comics correctement ajouté à la bibliothèque !");
 				alert.showAndWait();
+	);
 	 		 }
-	 		 //Database.selectByTitle(comic.getTitle());
-	 		 //Database.deconnection();
+	 		comic = new Comics();
 	 	});
 		
 	}
