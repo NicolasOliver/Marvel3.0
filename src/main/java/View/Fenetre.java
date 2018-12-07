@@ -290,42 +290,52 @@ public class Fenetre extends Application {
 						root.getChildren().clear();
 						System.out.println(textFieldHeros.getText());
 						textFieldHeros.clear();
-						String url = perso.getLien_image();
-						Image img = new Image(url,250,250,false,true);
-						ImageView imgPerso = new ImageView(img);
-						Label labelName = new Label("Nom : ");
-						Text infoName = new Text();
-						infoName.setText(perso.getName());
+						if (perso != null) {
+							String url = perso.getLien_image();
+							Image img = new Image(url,250,250,false,true);
+							ImageView imgPerso = new ImageView(img);
+							Label labelName = new Label("Nom : ");
+							Text infoName = new Text();
+							infoName.setText(perso.getName());
+							
+							Label labelDescription = new Label("Description : ");
+							Label infoDescription = new Label(perso.getDescription());
+							infoDescription.setMaxWidth(350);
+							infoDescription.setWrapText(true);
+							
+							
+							HBox hb1 = new HBox();
+							hb1.getChildren().addAll(labelName,infoName);
+							hb1.setSpacing(10);
+							hb1.setPadding(new Insets(0, 20, 10, 20));
+							
+							HBox hb2 = new HBox();
+							hb2.getChildren().addAll(labelDescription,infoDescription);
+							hb2.setSpacing(10);
+							hb2.setPadding(new Insets(0, 20, 10, 20));
+							
+							VBox vb = new VBox();
+							vb.setSpacing(10);
+							vb.setPadding(new Insets(0, 20, 10, 20)); 
+							vb.getChildren().addAll(hb1,hb2);
+							
+							hbHeros = new HBox();
+							hbHeros.getChildren().addAll(imgPerso,vb);
+							hbHeros.setSpacing(10);
+							hbHeros.setPadding(new Insets(350, 20, 10, 20));
+							getRoot().getChildren().add(hbHeros);
+							root.getChildren().add(hb);
+						} else {
+							alert.setTitle("Information");
+							alert.setHeaderText(null);
+							alert.setContentText("Héro non trouvé !");
+							alert.showAndWait();
+							root.getChildren().clear();
+							searchHeros();
+						}
 						
-						Label labelDescription = new Label("Description : ");
-						Label infoDescription = new Label(perso.getDescription());
-						infoDescription.setMaxWidth(350);
-						infoDescription.setWrapText(true);
 						
-						
-						HBox hb1 = new HBox();
-						hb1.getChildren().addAll(labelName,infoName);
-						hb1.setSpacing(10);
-						hb1.setPadding(new Insets(0, 20, 10, 20));
-						
-						HBox hb2 = new HBox();
-						hb2.getChildren().addAll(labelDescription,infoDescription);
-						hb2.setSpacing(10);
-						hb2.setPadding(new Insets(0, 20, 10, 20));
-						
-						VBox vb = new VBox();
-						vb.setSpacing(10);
-						vb.setPadding(new Insets(0, 20, 10, 20)); 
-						vb.getChildren().addAll(hb1,hb2);
-						
-						hbHeros = new HBox();
-						hbHeros.getChildren().addAll(imgPerso,vb);
-						hbHeros.setSpacing(10);
-						hbHeros.setPadding(new Insets(350, 20, 10, 20));
-						getRoot().getChildren().add(hbHeros);
-						root.getChildren().add(hb);
-						
-					} catch (NoSuchAlgorithmException | IOException | JSONException e) {
+					} catch (NullPointerException | NoSuchAlgorithmException | IOException | JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						alert.setTitle("Information");

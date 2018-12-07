@@ -75,14 +75,20 @@ public class Parse {
 		JSONObject data = obj.getJSONObject(donnees);
 		JSONArray results = data.getJSONArray(tableau);
 		Personnage pers=new Personnage();
-		pers.setId(results.getJSONObject(0).getInt(identifiant));
-		pers.setName(results.getJSONObject(0).getString(name));
-		pers.setDescription(results.getJSONObject(0).getString(description));
+		try {
+			pers.setId(results.getJSONObject(0).getInt(identifiant));
+			pers.setName(results.getJSONObject(0).getString(name));
+			pers.setDescription(results.getJSONObject(0).getString(description));
+			
+			// pour avoir le lien de l'image du personnage il faut combiner path et extension
+			pers.setLien_image(results.getJSONObject(0).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(0).getJSONObject(thumbnail).getString(extension));
+			return pers;
+		} catch (JSONException e) {
+			return null;
+		}
 		
-		// pour avoir le lien de l'image du personnage il faut combiner path et extension
-		pers.setLien_image(results.getJSONObject(0).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(0).getJSONObject(thumbnail).getString(extension));
 		
-		return pers;
+		
 	}
 	
 	/**
