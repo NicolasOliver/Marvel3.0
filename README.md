@@ -19,3 +19,4 @@ Procédure :
 Aide :
 
 - Si une erreur s'affiche aux niveaux des JSONException, c'est qu'il faut changer le classpath. (Le build) pour rediriger vers le Jar local
+- Si des erreurs au lancement de l'application concernant la fenetre, il faut clean le project
