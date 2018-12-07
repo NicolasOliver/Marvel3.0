@@ -2,7 +2,11 @@ package View;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 
@@ -10,16 +14,14 @@ import Controler.Database;
 import Model.Comics;
 import Model.Parse;
 import Model.Personnage;
+import Model.library;
 import Model.listComics;
 import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,11 +30,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -60,6 +62,7 @@ public class Fenetre extends Application {
 	Button comicsBtn = new Button("Rechercher un comics");
 	Button dbBtn = new Button("Se connecter");
 	Button yesBtn = new Button("Oui");
+	Button supBtn = new Button("Supprimer");
 	Button noBtn = new Button("Non");
 	Button backBtn = new Button("Retour");
 	Button validateBtn = new Button("Valider");
@@ -149,31 +152,103 @@ public class Fenetre extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				displayBiblio(); 
+				try {
+					displayBiblio();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
 			}
 			
 		});
 	}
 	
-	public void displayBiblio() {
+	
+	public void displayBiblio() throws SQLException {
 		
 		root.getChildren().clear();
 		Label label = new Label("Votre biblihotèque :");
 		label.setStyle("-fx-font-weight: bold");
 		label.setFont(new Font("Arial", 20));
-		TableView table = new TableView();
-		TableColumn NameCol = new TableColumn("Name");
-	    TableColumn descriptionCol = new TableColumn("Description");
-	    TableColumn AutorCol = new TableColumn("Auteur");
-	    TableColumn imgCol = new TableColumn("Image");
-	    table.getColumns().addAll(NameCol, descriptionCol,AutorCol, imgCol);
+		
+		TableView<library> table = new TableView<library>();
+		
+		TableColumn<library, String> idCol = new TableColumn<library, String>("ID");
+		idCol.setCellValueFactory(
+                new PropertyValueFactory<>("id"));
+		idCol.prefWidthProperty().bind(table.widthProperty().divide(7));
+		
+		TableColumn<library, String> NameCol = new TableColumn<library, String>("Titre");
+		NameCol.setCellValueFactory(
+                new PropertyValueFactory<>("titre"));
+		NameCol.prefWidthProperty().bind(table.widthProperty().divide(5));
+		
+	    TableColumn<library, String> descriptionCol = new TableColumn<library, String>("Description");
+	    descriptionCol.setCellValueFactory(
+                new PropertyValueFactory<>("description"));
+	    descriptionCol.prefWidthProperty().bind(table.widthProperty().divide(2));
+	    
+	    TableColumn<library, String> AutorCol = new TableColumn<library, String>("Auteur");
+	    AutorCol.setCellValueFactory(
+                new PropertyValueFactory<>("auteur"));
+	    AutorCol.prefWidthProperty().bind(table.widthProperty().divide(6));
+	    
+	    
+	    
+	    
+	    List<library> objlib = new ArrayList<library>();
+	    ObservableList<library> library = FXCollections.observableList(objlib);
+	    
+	    List<String[]> bibli = new ArrayList<String[]>();
+	    bibli = Database.getlibrary();
+	    
+	    for(int i =0;i<bibli.size();i++) {
+	    	library.add(new library(bibli.get(i)[0].toString(),
+	    			bibli.get(i)[1],
+	    			bibli.get(i)[2],
+	    			bibli.get(i)[3]));
+	    }
+	    
+	    
+	    table.setItems(library);
+	    table.getColumns().add(idCol);
+	    table.getColumns().add( NameCol);
+	    table.getColumns().add(descriptionCol);
+	    table.getColumns().add(AutorCol);
+	    
+	    
+	    HBox hb = new HBox();
+		hb.getChildren().addAll(supBtn);
+		hb.setSpacing(10);
+		hb.setPadding(new Insets(0, 0, 0, 370));
 
 	    final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(300, 0, 0, 0));
-        vbox.getChildren().addAll(label, table);
+        vbox.getChildren().addAll(label, hb, table);
 	    
 	    root.getChildren().addAll(vbox, backBtn);
+	    
+	    supBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				
+				
+				 if(table.getSelectionModel().getSelectedItem() != null) {
+					 library lib = new library( table.getSelectionModel().getSelectedItem().getId(),
+						table.getSelectionModel().getSelectedItem().getTitre(),
+						table.getSelectionModel().getSelectedItem().getDescription(),
+						table.getSelectionModel().getSelectedItem().getAuteur());
+					 Database.deleteLigne(Integer.parseInt(lib.getId()));
+				 }
+				
+				 library.remove(table.getSelectionModel().getSelectedIndex());
+				
+				
+				System.out.println("");
+			}
+	    	
+	    });
 	}
 	
 	public HBox newHb() {
@@ -211,8 +286,8 @@ public class Fenetre extends Application {
 				}else{
 					try {
 						perso = new Personnage();
-						root.getChildren().clear();
 						perso = Parse.infoPersonnage(textFieldHeros.getText());
+						root.getChildren().clear();
 						System.out.println(textFieldHeros.getText());
 						textFieldHeros.clear();
 						String url = perso.getLien_image();
@@ -255,7 +330,7 @@ public class Fenetre extends Application {
 						e.printStackTrace();
 						alert.setTitle("Information");
 						alert.setHeaderText(null);
-						alert.setContentText("Un problème est survenu.");
+						alert.setContentText("Héro non trouvé !");
 						alert.showAndWait();
 						root.getChildren().clear();
 						searchHeros();
@@ -355,8 +430,16 @@ public class Fenetre extends Application {
 				searchComics();
 		 	} else {
 		 		try {
+		 			 
+		 				 
+		 			Pattern p = Pattern.compile("\\d+"); // Ici ton regex => ta chaine de caractere a trouver
+		 			Matcher m = p.matcher(selectedIndices.get(0).substring(0, 5)); // s ta chaine titi23àde
+		 			while(m.find()) // tant qu'il arrive a matcher ton regex ds la chaine de caractere s
+		 			 //  System.out.println(m.group());
+		 				comic = Parse.infoComicsId(m.group());
+		 			
 			 		
-			 		comic = Parse.infoComicsId(selectedIndices.get(0).substring(0, 5));
+			 		
 			 		comic.afficher();
 			 		
 			 		String url = comic.getLien_image();
@@ -450,6 +533,7 @@ public class Fenetre extends Application {
 				alert.setHeaderText(null);
 				alert.setContentText("Comics correctement ajouté à la bibliothèque !");
 				alert.showAndWait();
+				Database.selectLigne(comic.getId());
 	 		 } else {
 	 			alert.setTitle("Information");
 				alert.setHeaderText(null);

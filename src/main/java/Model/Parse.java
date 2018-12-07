@@ -25,7 +25,6 @@ public class Parse {
 	private static String privateKey ="2901430602e3e8e4a3e16d6d9813979391ea45c4";
 	private static String publicKey = "11db561f5be05ff04926efa082f034ac"; 
 	private static String reqNom = "https://gateway.marvel.com:443/v1/public/characters?name=";
-	private static String reqlistComics = "https://gateway.marvel.com:443/v1/public/comics?characters=";
 	private static String reqTitle = "https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=";
 	private static String reqTitleId = "https://gateway.marvel.com:443/v1/public/comics/";
 	private static String limit = "&limit=10";
@@ -44,13 +43,11 @@ public class Parse {
 	private static String extension = "extension";
 	private static String creators = "creators";
 	private static String characters = "characters";
-	private static String books = "comics";
 	private static String items = "items";
 	private static String role = "role"; 
 	private static String total = "total";
 	private static String count = "count";
 	private static String available = "available";
-	private static String returned = "returned";
 	private static String ts=Long.toString(System.currentTimeMillis()); //generation du timstamp:
 	private static MessageDigest md5hash;
 	private static Scanner sc1;

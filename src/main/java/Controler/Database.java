@@ -16,11 +16,9 @@ import java.util.Scanner;
  *
  */
 public class Database {
-	private static String framework = "embedded";
 	private static String protocol = "jdbc:derby:";
 	private static String str;
 	private static Scanner sc1;
-	private static Scanner sc2;
 	private static String pass;
 	private static Scanner sc3;
 	private static String dbName;
@@ -189,7 +187,7 @@ public class Database {
 			// Commande de SELECT qui affiche une ligne
 			s = conn.createStatement();
 			statements.add(s);
-			rs = s.executeQuery("SELECT COUNT(*) FROM library where title = "+title);
+			rs = s.executeQuery("SELECT * FROM library WHERE titre = "+title);
 			while (rs.next()) {
 				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4));
 			}
@@ -272,7 +270,7 @@ public class Database {
 	 * @param pass
 	 * @return
 	 */
-	public static Boolean deleteLigne(int id, String dbName, String userName, String pass) {
+	public static Boolean deleteLigne(int id) {
 		try {
 			psUpdate = conn.prepareStatement("delete from library where id=?");
 			psUpdate.setInt(1, id);
@@ -301,10 +299,10 @@ public class Database {
 	 * @param com
 	 * @return
 	 */
-	public static Boolean insert(int id, String name, String author, String description) {
+	public static Boolean insert(int id, String name, String description, String author) {
 		try {
 			// Commande pour insérer des valeurs
-			psInsert = conn.prepareStatement("insert into library values (?, ?, ?, ?)");
+			psInsert = conn.prepareStatement("insert into library (id, titre,  description, auteur) values (?, ?, ?, ?)");
 			statements.add(psInsert);
 
 			psInsert.setInt(1, id);
