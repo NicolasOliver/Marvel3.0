@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Classe qui représente un comics Marvel
- * @author Nico
+ * @author Yves
  *
  */
 public class Comics {

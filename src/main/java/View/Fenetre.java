@@ -1,6 +1,7 @@
 package View;
 
 import java.io.IOException;
+
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ import javafx.stage.Stage;
 
 /**
  * Gère l'interface de l'application
- * @author Nico
+ * @author Hans, Nico, Yves
  *
  */
 public class Fenetre extends Application {
@@ -78,6 +79,9 @@ public class Fenetre extends Application {
 	Comics comic = null;
 	TextField textFieldHeros = new TextField();
 	
+	/**
+	 * Méthode qui initialise l'interface
+	 */
 	public void start() {
 		
 		herosBtn.setMaxWidth(200);
@@ -162,7 +166,10 @@ public class Fenetre extends Application {
 		});
 	}
 	
-	
+	/**
+	 * Méthode qui affiche la bibliothèque de l'utilisateur
+	 * @throws SQLException
+	 */
 	public void displayBiblio() throws SQLException {
 		
 		root.getChildren().clear();
@@ -262,6 +269,9 @@ public class Fenetre extends Application {
 		return hb;
 	}
 	
+	/**
+	 * Méthode pour afficher des informations sur une personnage
+	 */
 	public void searchHeros() {
 		root.getChildren().clear();
 		Label label = new Label("Entrer le nom d'un héros : ");
@@ -361,6 +371,9 @@ public class Fenetre extends Application {
 		return hb;
 	}
 	
+	/**
+	 * Méthode pour afficher des informations sur un comics
+	 */
 	public void searchComics() {
 		root.getChildren().clear();
 		Label label = new Label("Rechercher un comics : ");
@@ -555,6 +568,9 @@ public class Fenetre extends Application {
 		
 	}
 	
+	/**
+	 * écran pour se loger ou se créer un compte
+	 */
 	public void connect() {
 		root.getChildren().clear();
 		Label label = new Label("Avez-vous déjà un compte ?");
@@ -572,7 +588,10 @@ public class Fenetre extends Application {
 		root.getChildren().add(vb);
 	
 	}
-	 
+	
+	/**
+	 * Méthode pour se connecter à son compte
+	 */
 	public void connectAccount() {
 		root.getChildren().clear();
 		Label userName = new Label("Entrer votre nom d'utilisateur :");
@@ -629,6 +648,9 @@ public class Fenetre extends Application {
 		});
 	}
 	
+	/**
+	 * Méthode pour créer un compte
+	 */
 	public void createAccount() {
 		root.getChildren().clear();
 		Label userName = new Label("Entrer un nom d'utilisateur :");
@@ -685,6 +707,10 @@ public class Fenetre extends Application {
 		root.getChildren().add(vb);
 	}
 	
+	/**
+	 * Méthode principale qui lance la fenêtre
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}

@@ -2,7 +2,7 @@ package Model;
 
 /**
  * Classe qui représente un personnage Marvel de l'API
- * @author Nico
+ * @author Yves
  *
  */
 

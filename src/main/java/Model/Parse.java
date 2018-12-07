@@ -16,7 +16,7 @@ import Controler.HttpConnect;
 
 /** 
  * Classe qui récupère les données de l'API
- * @author Nico
+ * @author Nico, Yves
  *
  */
 public class Parse {
@@ -69,6 +69,7 @@ public class Parse {
 		
 		//on envoie la requete http
 		info = HttpConnect.readUrl(reqNom+nom+timestp+ts+apikey+publicKey+hash+md5);
+		System.out.println(reqNom+nom+timestp+ts+apikey+publicKey+hash+md5);
 		
 		// la reponse de la requete est un JSON
 		JSONObject obj = new JSONObject(info);
@@ -275,14 +276,4 @@ public class Parse {
 		}
 		return comics;
 	}
-	
-	/*public static void main(String[] args) throws NoSuchAlgorithmException, IOException, JSONException {
-		// Pour un comics
-		listComics ls = listeComics("thor",10);
-		ls.afficher();
-		Scanner sc1 = new Scanner(System.in);
-		int i = sc1.nextInt();
-		Comics comics = infoComicsId(String.valueOf(ls.getComicsId(i)));
-		comics.afficher();
-	} */
 }

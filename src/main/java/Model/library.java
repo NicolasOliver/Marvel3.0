@@ -2,6 +2,11 @@ package Model;
 
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * Classe qui permet de gérer l'affichage de la bilbiothèque
+ * @author Hans
+ *
+ */
 public class library {
 	
 	 private final SimpleStringProperty  id;

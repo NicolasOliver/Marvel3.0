@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 /**
  * Classe qui gère tout ce qui est relatif à la base de données
- * @author Nico
+ * @author Nico, Yves
  *
  */
 public class Database {
@@ -79,6 +79,7 @@ public class Database {
 		try {
 			conn = DriverManager
 					.getConnection(protocol + dbName + ";create=true ;user=" + userName + " ;password=" + pass);
+			System.out.println(protocol + dbName + ";create=true ;user=" + userName + " ;password=" + pass);
 			System.out.println(dbName + " créée avec succès !");
 			System.out.println("Notez bien vos identifiants : "+ dbName);
 			System.out.println("Mot de passe : " + pass);
@@ -111,7 +112,6 @@ public class Database {
 	/**
 	 * Pour se connecter à un compte
 	 * @param dbName
-	 * @param userName
 	 * @param pass
 	 * @return
 	 */
@@ -205,9 +205,6 @@ public class Database {
 	/**
 	 * Permet de sélectionner une ligne par id
 	 * @param id
-	 * @param dbName
-	 * @param userName
-	 * @param pass
 	 * @return
 	 */
 	public static Boolean selectLigne(int id) {
@@ -236,8 +233,6 @@ public class Database {
 	/**
 	 * Permet de sélectionner par auteur
 	 * @param author
-	 * @param userNames
-	 * @param pass
 	 * @return
 	 */
 	public static Boolean selectByAuthor(String author) {
@@ -265,9 +260,6 @@ public class Database {
 	/**
 	 * Permet de supprimer une ligne par identifiant
 	 * @param id
-	 * @param dbName
-	 * @param userName
-	 * @param pass
 	 * @return
 	 */
 	public static Boolean deleteLigne(int id) {
@@ -286,17 +278,11 @@ public class Database {
 	}
 	
 	/**
-	 * Pour pouvoir ajouter des comics à la bibliothèque
-	 * @param dbName
-	 * @param userName
-	 * @param pass
+	 * Pour insérer un comics dans la bilbiothèque
 	 * @param id
-	 * @param title
+	 * @param name
+	 * @param description
 	 * @param author
-	 * @param etat
-	 * @param bookmark
-	 * @param note
-	 * @param com
 	 * @return
 	 */
 	public static Boolean insert(int id, String name, String description, String author) {
@@ -320,6 +306,11 @@ public class Database {
 		return false;
 	}
 	
+	/**
+	 * Pour récupérer toutes les données de la librairie
+	 * @return
+	 * @throws SQLException
+	 */
 	public static List<String[]> getlibrary() throws SQLException {
 		List<String[]> data = new ArrayList<String[]>();
 		s = conn.createStatement();

@@ -15,3 +15,7 @@ Procédure :
 
 - Chacun est dédié à une partie spécifique de l'application envisagée
 - On essaie de se fixer des deadlines pour avancer de manière intelligente et ne pas procrastiner
+
+Aide :
+
+- Si une erreur s'affiche aux niveaux des JSONException, c'est qu'il faut changer le classpath. (Le build) pour rediriger vers le Jar local

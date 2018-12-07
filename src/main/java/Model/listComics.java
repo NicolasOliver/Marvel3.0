@@ -2,6 +2,11 @@ package Model;
 
 import java.util.ArrayList;
 
+/**
+ * Classe qui permet d'afficher une liste de Comics
+ * @author Nico
+ *
+ */
 public class listComics {
 
 	private int total;
